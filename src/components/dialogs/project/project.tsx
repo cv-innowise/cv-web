@@ -8,6 +8,7 @@ import { createDialogHook } from 'helpers/create-dialog-hook.helper'
 import { requiredValidation } from 'helpers/validation.helper'
 import { DayMonthYear } from 'constants/format.constant'
 import { ProjectSkillsSelect } from '@molecules/project_skills_select'
+import { AiPrompt } from '@molecules/ai_prompt'
 import * as Styled from './project.styles'
 import { ProjectFormValues, ProjectDialogProps } from './project.types'
 
@@ -21,12 +22,16 @@ const Project = ({ title, confirmText, item, onConfirm, closeDialog }: ProjectDi
       end_date: item?.end_date ? parseISO(item.end_date) : null,
       description: item?.description || '',
       environment: item?.environment || []
-    }
+    },
+    mode: 'onChange'
   })
   const {
-    formState: { errors, isDirty },
+    formState: { errors, isDirty, dirtyFields, defaultValues },
     register,
-    handleSubmit
+    handleSubmit,
+    watch,
+    getValues,
+    setValue
   } = methods
   const [isLoading, setIsLoading] = useState(false)
 
@@ -70,6 +75,35 @@ const Project = ({ title, confirmText, item, onConfirm, closeDialog }: ProjectDi
             label={t('Description')}
             multiline
             minRows={5}
+          />
+          <AiPrompt
+            resetDisabled={!dirtyFields.description}
+            promptDisabled={!watch('description')}
+            onReset={() =>
+              setValue('description', defaultValues?.description || '', {
+                shouldDirty: true,
+                shouldValidate: true
+              })
+            }
+            onPrompt={() => {
+              const { name, domain, description } = getValues()
+
+              return {
+                input: `
+                    Write app technical description based on the following input:
+                    "${description}".
+                    Application name is ${name || '[Name]'}. Don't use this name in every sentence.
+                    Try to rephrase the name.
+                    It is connected with ${domain || '[Domain]'} area.
+                    Describe which problems it can solve.
+                    Include essential and popular features that are used in this area. Don't use the word "essential" and "popular".
+                    Your response length should be less than 500 characters.
+                  `,
+                onChunk(output) {
+                  setValue('description', output, { shouldDirty: true, shouldValidate: true })
+                }
+              }
+            }}
           />
           <ProjectSkillsSelect />
         </Styled.Column>
