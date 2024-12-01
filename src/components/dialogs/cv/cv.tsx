@@ -5,14 +5,18 @@ import { createDialogHook } from 'helpers/create-dialog-hook.helper'
 import { useCvCreate } from 'hooks/use-cvs'
 import { requiredValidation } from 'helpers/validation.helper'
 import { addNotification } from 'graphql/notifications'
+import { AiPrompt, getCvPrompt } from '@molecules/ai_prompt'
 import { CvFormValues, CvProps } from './cv.types'
 import * as Styled from './cv.styles'
 
-const Cv = ({ userId, closeDialog }: CvProps) => {
+const Cv = ({ userId, closeDialog, onCreate }: CvProps) => {
   const {
-    formState: { errors, isDirty },
+    formState: { errors, isDirty, dirtyFields },
     register,
-    handleSubmit
+    handleSubmit,
+    watch,
+    setValue,
+    getValues
   } = useForm<CvFormValues>({
     defaultValues: {
       name: '',
@@ -34,7 +38,10 @@ const Cv = ({ userId, closeDialog }: CvProps) => {
         }
       }
     })
-      .then(closeDialog)
+      .then(({ data }) => {
+        data && onCreate?.(data)
+        closeDialog()
+      })
       .then(() => addNotification('CV was created'))
       .catch((error) => addNotification(error.message, 'error'))
   }
@@ -58,6 +65,26 @@ const Cv = ({ userId, closeDialog }: CvProps) => {
           minRows={7}
           error={!!errors.description}
           helperText={t(errors.description?.message || '')}
+        />
+        <AiPrompt
+          resetDisabled={!dirtyFields.description}
+          promptDisabled={!watch('description')}
+          onReset={() =>
+            setValue('description', '', {
+              shouldDirty: true,
+              shouldValidate: true
+            })
+          }
+          onPrompt={() => {
+            const { name, education, description } = getValues()
+
+            return {
+              input: getCvPrompt(description, name, education),
+              onChunk(output) {
+                setValue('description', output, { shouldDirty: true, shouldValidate: true })
+              }
+            }
+          }}
         />
       </Styled.Column>
       <DialogActions>
