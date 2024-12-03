@@ -20,11 +20,13 @@ import { usePermission } from 'hooks/use_permission'
 import { addNotification } from 'graphql/notifications'
 import { useSkillsWithCategories } from 'hooks/use-skills'
 import * as Styled from './user-skills.styles'
+import { UserSkillsProps } from './user-skills.types'
 
-const UserSkills = () => {
+const UserSkills = ({ forUserId = '' }: UserSkillsProps) => {
   const { t } = useTranslation()
-  const { userId = '' } = useParams()
+  const { userId = forUserId } = useParams()
   const { canUpdateProfile } = usePermission()
+  // const { user } = useUser(userId)
   const { profile, skills, loading } = useProfileSkills(userId)
   const { skillCategories } = useSkillsWithCategories(skills)
   const [openSkillMasteryDialog] = useSkillMasteryDialog()
@@ -33,6 +35,7 @@ const UserSkills = () => {
   const [updateProfileSkill] = useProfileSkillUpdate()
   const [deleteProfileSkill] = useProfileSkillDelete()
   const { isActive$ } = useBulkDeletion()
+  // const { skills: availableSkills } = useSkills()
 
   const handleAdd = () => {
     openSkillMasteryDialog({
@@ -105,6 +108,38 @@ const UserSkills = () => {
             <Add /> {t('Add skill')}
           </Button>
         )}
+        {/* <AiPrompt
+          resetHidden
+          onPrompt={() => {
+            return {
+              input: getSkillsPrompt(user?.department?.name, user?.position?.name),
+              onChunk(output) {}
+            }
+          }}
+          onReady={(output) => {
+            const suggestedSkills = output.split(', ').map((skill) => skill.toLowerCase())
+            const newSkills = availableSkills.filter((skill) =>
+              suggestedSkills.find((name) => name.includes(skill.name.toLowerCase()))
+            )
+
+            Promise.allSettled(
+              newSkills.map(({ name, category }) =>
+                addProfileSkill({
+                  variables: {
+                    skill: {
+                      userId,
+                      name,
+                      categoryId: category?.id,
+                      mastery: Mastery.Proficient
+                    }
+                  }
+                })
+              )
+            )
+              .then(() => addNotification('Skill was added'))
+              .catch((error) => addNotification(error.message, 'error'))
+          }}
+        /> */}
         {Object.entries(skillCategories).map(([category, skills]) => (
           <SkillsGroup
             key={category}
