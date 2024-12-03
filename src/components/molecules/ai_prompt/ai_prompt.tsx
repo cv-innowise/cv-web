@@ -8,7 +8,14 @@ const buttonSx = {
   minWidth: '120px'
 }
 
-export const AiPrompt = ({ resetDisabled, promptDisabled, onReset, onPrompt }: AiPromptProps) => {
+export const AiPrompt = ({
+  resetDisabled,
+  resetHidden,
+  promptDisabled,
+  onReset,
+  onPrompt,
+  onReady
+}: AiPromptProps) => {
   const { isAvailable, isPending, write } = useWriter()
 
   if (!isAvailable) {
@@ -18,15 +25,17 @@ export const AiPrompt = ({ resetDisabled, promptDisabled, onReset, onPrompt }: A
   return (
     <>
       <Box display="flex" gridColumn="span 2" justifyContent="flex-end" mt="-24px">
-        <Button
-          color="secondary"
-          sx={buttonSx}
-          startIcon={<Undo />}
-          disabled={isPending || resetDisabled}
-          onClick={onReset}
-        >
-          Undo
-        </Button>
+        {!resetHidden && (
+          <Button
+            color="secondary"
+            sx={buttonSx}
+            startIcon={<Undo />}
+            disabled={isPending || resetDisabled}
+            onClick={onReset}
+          >
+            Undo
+          </Button>
+        )}
 
         <Button
           sx={buttonSx}
@@ -38,7 +47,7 @@ export const AiPrompt = ({ resetDisabled, promptDisabled, onReset, onPrompt }: A
             )
           }
           disabled={isPending || promptDisabled}
-          onClick={() => write(onPrompt())}
+          onClick={() => write(onPrompt()).then(onReady)}
         >
           Use AI
         </Button>
