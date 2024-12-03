@@ -7,7 +7,7 @@ export const getProjectPrompt = (description: string, name?: string, domain?: st
     It is connected with ${domain || '[Domain]'} area.
     Describe which problems it can solve.
     Include essential and popular features that are used in this area. Don't use the word "essential" and "popular".
-    Your response length should be less than 500 characters.
+    Your response length should be less than 1000 characters.
   `
 }
 
@@ -17,7 +17,26 @@ export const getCvPrompt = (description: string, name?: string, education?: stri
     "${description}".
     Position role is ${name || '[Name]'}. 
     Person has education in ${education || '[Education]'}.
-    Describe overall experience in this role. Provide a lot of professional responsibilities and achievements. Pay attention to details.
+    Describe overall experience in this role.
+    Provide a lot of professional responsibilities and achievements. Pay attention to details.
     Your response length should be less than 1000 characters.
+  `
+}
+
+export const getCvProjectResponsibilitiesPrompt = (
+  responsibilities: string,
+  domain?: string,
+  description?: string,
+  environment?: string[]
+) => {
+  return `
+    Write a list of 3-5 professional responsibilities during the project experience.
+    Use the following user input as a reference: "${responsibilities}".
+    The project area is ${domain || '[Domain]'}.
+    Your response length should be less than 1000 characters.
+    Pay attention to details. Describe how "${environment?.join(', ')}" 
+    skills were used in terms of what was achieved to bring value to the product.
+    You can use this project description as a context: "${description}".
+    Format each responsibility to start with * and end with "\n" new line symbol. 
   `
 }

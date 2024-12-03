@@ -26,7 +26,7 @@ export const Project = ({ cv, project }: ProjectProps) => {
         <Styled.Responsibilities>
           {responsibilities.map((responsibility, index) => (
             <li key={responsibility}>
-              {responsibility}
+              {responsibility.replace(/\.$/, '')}
               {index === responsibilities.length - 1 ? '.' : ';'}
             </li>
           ))}

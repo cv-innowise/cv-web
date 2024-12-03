@@ -8,6 +8,7 @@ import { createDialogHook } from 'helpers/create-dialog-hook.helper'
 import { requiredValidation } from 'helpers/validation.helper'
 import { DayMonthYear } from 'constants/format.constant'
 import { ProjectSelect } from '@molecules/project-select'
+import { AiPrompt, getCvProjectResponsibilitiesPrompt } from '@molecules/ai_prompt'
 import * as Styled from './cv-project.styles'
 import { CvProjectDialogProps, CvProjectFormValues } from './cv-project.types'
 
@@ -29,14 +30,17 @@ const CvProject = ({
       end_date: item?.end_date ? parseISO(item.end_date) : null,
       description: item?.description || '',
       roles: item?.roles || [],
-      responsibilities: item?.responsibilities.join('\n') || ''
+      responsibilities: item?.responsibilities.join('\n\n') || ''
     }
   })
   const {
     control,
-    formState: { errors, isDirty },
+    formState: { errors, isDirty, dirtyFields, defaultValues },
     register,
-    handleSubmit
+    handleSubmit,
+    watch,
+    getValues,
+    setValue
   } = methods
   const { t } = useTranslation()
   const [isLoading, setIsLoading] = useState(false)
@@ -47,7 +51,7 @@ const CvProject = ({
     onConfirm({
       ...values,
       responsibilities: values.responsibilities
-        .split('\n')
+        .split('\n\n')
         .map((responsibility) => responsibility.trim())
         .filter((responsibility) => responsibility)
     })
@@ -116,6 +120,38 @@ const CvProject = ({
                 minRows={1}
               />
             )}
+          />
+          <AiPrompt
+            resetDisabled={!dirtyFields.description}
+            promptDisabled={!watch('responsibilities')}
+            onReset={() =>
+              setValue('responsibilities', defaultValues?.responsibilities || '', {
+                shouldDirty: true,
+                shouldValidate: true
+              })
+            }
+            onPrompt={() => {
+              const { domain, description, responsibilities } = getValues()
+
+              return {
+                input: getCvProjectResponsibilitiesPrompt(
+                  responsibilities,
+                  domain,
+                  description,
+                  item?.environment
+                ),
+                onChunk(output) {
+                  setValue(
+                    'responsibilities',
+                    output.replace(/\*[ ]{1,}/g, '').replace(/\n/g, '\n\n'),
+                    {
+                      shouldDirty: true,
+                      shouldValidate: true
+                    }
+                  )
+                }
+              }
+            }}
           />
         </Styled.Column>
         <DialogActions>
