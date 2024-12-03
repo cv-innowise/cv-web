@@ -1,7 +1,7 @@
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { parseISO } from 'date-fns/esm'
-import { Button, DialogActions, DialogTitle, TextField } from '@mui/material'
+import { Button, Chip, DialogActions, DialogTitle, TextField } from '@mui/material'
 import { useState } from 'react'
 import { DatePicker } from '@molecules/date-picker'
 import { createDialogHook } from 'helpers/create-dialog-hook.helper'
@@ -9,6 +9,7 @@ import { requiredValidation } from 'helpers/validation.helper'
 import { DayMonthYear } from 'constants/format.constant'
 import { ProjectSelect } from '@molecules/project-select'
 import { AiPrompt, getCvProjectResponsibilitiesPrompt } from '@molecules/ai_prompt'
+import { DropdownPaper } from '@atoms/dropdown_paper'
 import * as Styled from './cv-project.styles'
 import { CvProjectDialogProps, CvProjectFormValues } from './cv-project.types'
 
@@ -107,6 +108,20 @@ const CvProject = ({
                 minRows={5}
               />
             )}
+          />
+          <Styled.Skills
+            value={item?.environment}
+            multiple
+            options={[]}
+            disableCloseOnSelect
+            renderTags={(value, getTagProps) =>
+              value.map((option, index) => (
+                <Chip {...getTagProps({ index })} key={option} label={option} size="small" />
+              ))
+            }
+            PaperComponent={DropdownPaper}
+            disabled
+            renderInput={(params) => <TextField {...params} label={t('Environment')} />}
           />
           <Controller
             control={control}

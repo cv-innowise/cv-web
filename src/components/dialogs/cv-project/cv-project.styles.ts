@@ -1,5 +1,7 @@
 import { DialogContent, TextField, styled } from '@mui/material'
 
+export { Skills } from '@molecules/project_skills_select/project_skills_select.styles'
+
 export const Column = styled(DialogContent)(({ theme }) => ({
   display: 'grid',
   gridTemplateColumns: '1fr 1fr',
