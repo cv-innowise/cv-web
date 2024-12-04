@@ -59,6 +59,16 @@ export const userLinks = [
     to: routes.users.root
   },
   {
+    IconComponent: TrendingUp,
+    name: 'skills',
+    to: routes.skills
+  },
+  {
+    IconComponent: Translate,
+    name: 'languages',
+    to: routes.languages
+  },
+  {
     IconComponent: ContactPageOutlined,
     name: 'cvs',
     to: routes.cvs.root

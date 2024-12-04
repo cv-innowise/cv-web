@@ -18,9 +18,10 @@ import { useBulkDeletion } from 'hooks/use_bulk_deletion'
 import { usePermission } from 'hooks/use_permission'
 import { addNotification } from 'graphql/notifications'
 import * as Styled from './user-languages.styles'
+import { UserLanguagesProps } from './user-languages.types'
 
-const UserLanguages = () => {
-  const { userId = '' } = useParams()
+const UserLanguages = ({ forUserId = '' }: UserLanguagesProps) => {
+  const { userId = forUserId } = useParams()
   const { t } = useTranslation()
   const { canUpdateProfile } = usePermission()
   const { profile, languages, loading } = useProfileLanguages(userId)

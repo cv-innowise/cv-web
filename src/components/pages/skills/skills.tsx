@@ -4,6 +4,8 @@ import { SkillsTableRow } from '@organisms/skills-table-row'
 import { SkillsTableTool } from '@organisms/skills-table-tool'
 import { SkillsTableHead } from '@organisms/skills-table-head'
 import { useSkills } from 'hooks/use-skills'
+import { useAuth } from 'hooks/use-auth'
+import { UserSkills } from '@pages/user-skills'
 
 const Table = createTable<Skill>()
 
@@ -23,4 +25,14 @@ const Skills = () => {
   )
 }
 
-export default Skills
+const SkillsAdapter = () => {
+  const { isAdmin, userId } = useAuth()
+
+  if (isAdmin) {
+    return <Skills />
+  }
+
+  return <UserSkills forUserId={userId} />
+}
+
+export default SkillsAdapter

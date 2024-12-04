@@ -20,10 +20,11 @@ import { usePermission } from 'hooks/use_permission'
 import { addNotification } from 'graphql/notifications'
 import { useSkillsWithCategories } from 'hooks/use-skills'
 import * as Styled from './user-skills.styles'
+import { UserSkillsProps } from './user-skills.types'
 
-const UserSkills = () => {
+const UserSkills = ({ forUserId = '' }: UserSkillsProps) => {
   const { t } = useTranslation()
-  const { userId = '' } = useParams()
+  const { userId = forUserId } = useParams()
   const { canUpdateProfile } = usePermission()
   const { profile, skills, loading } = useProfileSkills(userId)
   const { skillCategories } = useSkillsWithCategories(skills)
