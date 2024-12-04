@@ -14,7 +14,7 @@ https://cv-innowise.vercel.app
 - chrome://flags/#rewriter-api-for-gemini-nano set to `Enabled`
 - chrome://flags/#language-detection-api set to `Enabled`
 - chrome://flags/#translation-api set to `Enabled`
-- install language packs en-de (de-en), en-ru (ru-en) chrome://on-device-translation-internals
+- install language packs en-de (de-en), en-ru (ru-en) [chrome://on-device-translation-internals](chrome://on-device-translation-internals)
 
 ## Setup
 
@@ -39,7 +39,7 @@ npm start
 
 ## Recommendations
 
-The following IDE extensions are recommended for use.\
+The following IDE extensions are recommended for use.
 
 - [Code Spell Checker](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker) is a great help to avoid typos when naming variables and functions.
 
