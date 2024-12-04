@@ -15,6 +15,9 @@ export type UpdateLanguageResult = {
 
 export interface ILanguageService {
   language$: ReactiveVar<string>
-  getLanguage(): string | null
+  translation$: ReactiveVar<string>
+  getLanguage(): string
+  getTranslation(): string
   changeLanguage(language: string): void
+  changeTranslation(translation: string): void
 }

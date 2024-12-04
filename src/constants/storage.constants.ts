@@ -3,6 +3,7 @@ export enum StorageKeys {
   RefreshToken = 'refresh_token',
   User = 'user',
   Language = 'language',
+  Translation = 'translation',
   Theme = 'theme',
   Navigation = 'navigation'
 }

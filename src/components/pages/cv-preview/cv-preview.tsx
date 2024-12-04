@@ -9,6 +9,8 @@ import { downloadPdf } from 'helpers/download-pdf'
 import { sortDates } from 'helpers/table-sort.helper'
 import { SortOrder } from 'constants/table-sort.constants'
 import { useSkillsWithCategories } from 'hooks/use-skills'
+import { AiTranslation, AiTranslationProvider } from '@features/ai_translation'
+import { CvTranslation } from '@molecules/cv_translation'
 import { DetailedSkills } from './innowise/detailed_skills'
 import { Project } from './innowise/project'
 import * as Styled from './cv-preview.styles'
@@ -16,7 +18,7 @@ import { SummarySkills } from './innowise/summary_skills'
 
 const CvPreview = () => {
   const ref = useRef<HTMLDivElement>(null)
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { cvId = '' } = useParams()
   const { cv, loading } = useCv(cvId)
   const { skills, loading: loadingSkills } = useCvSkills(cvId)
@@ -58,7 +60,10 @@ const CvPreview = () => {
     <Styled.Document ref={ref} maxWidth="md">
       <Styled.Head>
         <Typography variant="h4">{cv.user?.profile.full_name}</Typography>
-        <Styled.Position>{cv.user?.position_name}</Styled.Position>
+        <Styled.Position>
+          <AiTranslation>{cv.user?.position_name}</AiTranslation>
+        </Styled.Position>
+        <CvTranslation />
         <Styled.Export variant="outlined" disabled={loadingPdf} onClick={handleExport}>
           {t('Export PDF')}
         </Styled.Export>
@@ -75,14 +80,20 @@ const CvPreview = () => {
           ))}
           <Styled.Title>{t('Domains')}</Styled.Title>
           <Typography sx={{ whiteSpace: 'pre-line' }}>
-            {[...new Set(sortedProjects.map(({ domain }) => domain))]
-              .filter((domain) => domain)
-              .join(',\n')}
+            <AiTranslation>
+              {[...new Set(sortedProjects.map(({ domain }) => domain))]
+                .filter((domain) => domain)
+                .join(',\n')}
+            </AiTranslation>
           </Typography>
         </Styled.Left>
         <Styled.Main>
-          <Styled.Title>{cv.name}</Styled.Title>
-          <Typography>{cv.description}</Typography>
+          <Styled.Title>
+            <AiTranslation>{cv.name}</AiTranslation>
+          </Styled.Title>
+          <Typography>
+            <AiTranslation>{cv.description}</AiTranslation>
+          </Typography>
           <SummarySkills skillCategories={skillCategories} />
         </Styled.Main>
       </Styled.Summary>
@@ -105,4 +116,12 @@ const CvPreview = () => {
   )
 }
 
-export default CvPreview
+const CvTranslationAdapter = () => {
+  return (
+    <AiTranslationProvider>
+      <CvPreview />
+    </AiTranslationProvider>
+  )
+}
+
+export default CvTranslationAdapter

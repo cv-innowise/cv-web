@@ -92,6 +92,7 @@
   "Dark": "Темный",
   "Device settings": "Настройки устройства",
   "Language": "Язык",
+  "Resume language (Translation)": "Язык резюме (Перевод)",
 
   "Name": "Имя",
   "Internal Name": "Внутреннее имя",
@@ -145,6 +146,8 @@
   "Category": "Категория",
   "No category": "Категория не выбрана",
   "Programming languages": "Языки программирования",
+  "Programming technologies": "Технологии программирования",
+  "Frontend technologies": "Frontend технологии",
   "State management libraries": "Библиотеки управления состоянием",
   "Databases": "Базы данных",
   "Testing frameworks and tools": "Платформы и инструменты тестирования",

@@ -1,6 +1,7 @@
 import { Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { format, parseISO } from 'date-fns/esm'
+import { AiTranslation } from '@features/ai_translation'
 import * as Styled from './project.styles'
 import { ProjectProps } from './project.types'
 
@@ -11,12 +12,18 @@ export const Project = ({ cv, project }: ProjectProps) => {
   return (
     <Styled.Project>
       <Styled.Left>
-        <Styled.Name>{name}</Styled.Name>
-        <Typography>{description}</Typography>
+        <Styled.Name>
+          <AiTranslation>{name}</AiTranslation>
+        </Styled.Name>
+        <Typography>
+          <AiTranslation>{description}</AiTranslation>
+        </Typography>
       </Styled.Left>
       <Styled.Main>
         <Styled.Title>{t('Project roles')}</Styled.Title>
-        <Typography>{roles.join(', ') || cv.user?.position_name}</Typography>
+        <Typography>
+          <AiTranslation>{roles.join(', ') || cv.user?.position_name}</AiTranslation>
+        </Typography>
         <Styled.Title>{t('Period')}</Styled.Title>
         <Typography>
           {format(parseISO(start_date), 'MM.yyyy')} –{' '}
@@ -26,7 +33,7 @@ export const Project = ({ cv, project }: ProjectProps) => {
         <Styled.Responsibilities>
           {responsibilities.map((responsibility, index) => (
             <li key={responsibility}>
-              {responsibility.replace(/\.$/, '')}
+              <AiTranslation>{responsibility.replace(/\.$/, '')}</AiTranslation>
               {index === responsibilities.length - 1 ? '.' : ';'}
             </li>
           ))}
