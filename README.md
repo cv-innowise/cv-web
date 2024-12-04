@@ -2,6 +2,20 @@
 
 Front-end application for personnel and CV management. Sample code for React interns.
 
+## Application is available here
+
+https://cv-innowise.vercel.app
+
+## Enable Chrome AI features
+
+- make sure Chrome AI is working [Setup Instructions](https://docs.google.com/document/d/1WZlAvfrIWDwzQXdqIcCOTcrWLGGgmoesN1VGFbKU_D4/edit?tab=t.0#heading=h.5s2qlonhpm36)
+- chrome://flags/#optimization-guide-on-device-model set to `Enabled BypassPerfRequirement`
+- chrome://flags/#writer-api-for-gemini-nano set to `Enabled`
+- chrome://flags/#rewriter-api-for-gemini-nano set to `Enabled`
+- chrome://flags/#language-detection-api set to `Enabled`
+- chrome://flags/#translation-api set to `Enabled`
+- install language packs en-de (de-en), en-ru (ru-en) chrome://on-device-translation-internals
+
 ## Setup
 
 - install packages
