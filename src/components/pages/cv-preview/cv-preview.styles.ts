@@ -38,8 +38,9 @@ export const Position = styled(Typography)({
 
 export const Export = styled(Button)({
   height: 40,
-  gridColumn: 2,
+  gridColumn: 3,
   gridRow: 1,
+  minWidth: 160,
   '@media print': {
     display: 'none'
   }

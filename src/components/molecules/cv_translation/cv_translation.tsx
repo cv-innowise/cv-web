@@ -6,7 +6,7 @@ import { languageService } from 'graphql/languages/languages.service'
 import { ai18n } from '@features/ai_translation/ai_translation_provider'
 import { CvTranslationProps } from './cv_translation.types'
 
-export const CvTranslation = ({ label }: CvTranslationProps) => {
+export const CvTranslation = ({ label, sx }: CvTranslationProps) => {
   const { t } = useTranslation()
   const translation = useReactiveVar(languageService.translation$)
 
@@ -18,7 +18,13 @@ export const CvTranslation = ({ label }: CvTranslationProps) => {
   }
 
   return (
-    <TextField value={translation} select label={t(label || 'Language')} onChange={handleLanguage}>
+    <TextField
+      sx={sx}
+      value={translation}
+      select
+      label={t(label || 'Language')}
+      onChange={handleLanguage}
+    >
       <MenuItem value="en">English</MenuItem>
       <MenuItem value="de">Deutsch</MenuItem>
       <MenuItem value="ru">Русский</MenuItem>

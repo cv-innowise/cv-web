@@ -18,7 +18,7 @@ import { SummarySkills } from './innowise/summary_skills'
 
 const CvPreview = () => {
   const ref = useRef<HTMLDivElement>(null)
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const { cvId = '' } = useParams()
   const { cv, loading } = useCv(cvId)
   const { skills, loading: loadingSkills } = useCvSkills(cvId)
@@ -63,7 +63,20 @@ const CvPreview = () => {
         <Styled.Position>
           <AiTranslation>{cv.user?.position_name}</AiTranslation>
         </Styled.Position>
-        <CvTranslation />
+        <CvTranslation
+          sx={{
+            gridRow: 1,
+            gridColumn: 2,
+            mr: 2,
+            minWidth: 160,
+            '.MuiOutlinedInput-root': {
+              height: '40px'
+            },
+            '@media print': {
+              display: 'none'
+            }
+          }}
+        />
         <Styled.Export variant="outlined" disabled={loadingPdf} onClick={handleExport}>
           {t('Export PDF')}
         </Styled.Export>
