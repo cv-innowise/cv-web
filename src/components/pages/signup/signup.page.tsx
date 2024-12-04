@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+import { generatePath, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Button, TextField, Typography } from '@mui/material'
 import { setSession } from 'graphql/auth/session'
@@ -36,7 +36,12 @@ const Signup = () => {
         }
       }
     })
-      .then(({ data }) => data && setSession(data.signup))
+      .then(({ data }) => {
+        if (data) {
+          setSession(data.signup)
+          navigate(generatePath(routes.users.profile, { userId: data.signup.user.id }))
+        }
+      })
       .then(() => navigate(routes.root))
       .catch((error) => addNotification(error.message, 'error'))
   }
