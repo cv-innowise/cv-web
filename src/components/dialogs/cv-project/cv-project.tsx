@@ -110,7 +110,12 @@ const CvProject = ({
             )}
           />
           <Styled.Skills
-            value={item?.environment}
+            value={
+              item?.environment ||
+              availableProjects?.find((project) => watch('projectId') === project.id)
+                ?.environment ||
+              []
+            }
             multiple
             options={[]}
             disableCloseOnSelect
