@@ -9,7 +9,6 @@ import {
 import { LOGIN, SIGNUP, FORGOT_PASSWORD, RESET_PASSWORD } from 'graphql/auth'
 import { session$ } from 'graphql/auth/session'
 import type { LoginResult, SignupResult } from 'graphql/auth/auth.types'
-import { USERS } from 'graphql/users'
 import { publicClient } from 'graphql/client'
 
 type LoginArgs = { variables: { auth: AuthInput } }
@@ -18,8 +17,8 @@ export const login = ({ variables }: LoginArgs) => {
   return publicClient.query<LoginResult>({ query: LOGIN, variables })
 }
 
-export const useSignup = () => {
-  return useMutation<SignupResult, { auth: AuthInput }>(SIGNUP, { refetchQueries: [USERS] })
+export const signup = ({ variables }: LoginArgs) => {
+  return publicClient.mutate<SignupResult>({ mutation: SIGNUP, variables })
 }
 
 export const useAuth = () => {

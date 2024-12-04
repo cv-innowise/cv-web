@@ -2,11 +2,12 @@ import { useForm } from 'react-hook-form'
 import { generatePath, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Button, TextField, Typography } from '@mui/material'
+import { useState } from 'react'
 import { setSession } from 'graphql/auth/session'
 import { PasswordInput } from '@molecules/password-input'
 import { requiredValidation, passwordValidation } from 'helpers/validation.helper'
 import { routes } from 'constants/routes'
-import { useSignup } from 'hooks/use-auth'
+import { signup } from 'hooks/use-auth'
 import { addNotification } from 'graphql/notifications'
 import { SignupFormValues } from './signup.types'
 import * as Styled from '../login/login.styles'
@@ -23,11 +24,12 @@ const Signup = () => {
     }
   })
 
-  const [signup, { loading }] = useSignup()
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const { t } = useTranslation()
 
   const onSubmit = ({ email, password }: SignupFormValues) => {
+    setLoading(true)
     signup({
       variables: {
         auth: {
@@ -42,8 +44,8 @@ const Signup = () => {
           navigate(generatePath(routes.users.profile, { userId: data.signup.user.id }))
         }
       })
-      .then(() => navigate(routes.root))
       .catch((error) => addNotification(error.message, 'error'))
+      .finally(() => setLoading(false))
   }
 
   return (

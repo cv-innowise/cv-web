@@ -2,6 +2,7 @@ import { makeVar } from '@apollo/client'
 import type { UpdateTokenResult } from 'cv-graphql'
 import { StorageKeys } from 'constants/storage.constants'
 import { type JwtPayload, parseJwt } from 'helpers/parse_jwt'
+import { client } from 'graphql/client'
 
 export const accessToken$ = makeVar<string>(localStorage.getItem(StorageKeys.AccessToken) || '')
 export const refreshToken$ = makeVar<string>(localStorage.getItem(StorageKeys.RefreshToken) || '')
@@ -22,4 +23,5 @@ export const setSession = ({ access_token, refresh_token }: UpdateTokenResult) =
 export const logout = () => {
   setToken({ access_token: '', refresh_token: '' })
   session$(null)
+  client.clearStore()
 }
