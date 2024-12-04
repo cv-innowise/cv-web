@@ -14,7 +14,7 @@ https://cv-innowise.vercel.app
 - chrome://flags/#rewriter-api-for-gemini-nano set to `Enabled`
 - chrome://flags/#language-detection-api set to `Enabled`
 - chrome://flags/#translation-api set to `Enabled`
-- install language packs en-de (de-en), en-ru (ru-en) [chrome://on-device-translation-internals](chrome://on-device-translation-internals)
+- install language packs en-de (de-en), en-ru (ru-en) chrome://on-device-translation-internals
 
 ## Setup
 
