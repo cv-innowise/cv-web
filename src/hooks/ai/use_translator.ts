@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 
 // @ts-expect-error translation types
-const detectorPromise = window.ai?.languageDetector?.create()
+const detectorPromise = window.ai?.languageDetector?.create?.()
 
 export const useTranslator = () => {
   // @ts-expect-error translation types

@@ -1,9 +1,9 @@
 import { useState } from 'react'
 
 // @ts-expect-error ai types
-const writerPromise = window.ai?.writer?.create()
+const writerPromise = window.ai?.writer?.create?.()
 // @ts-expect-error ai types
-const rewriterPromise = window.ai?.rewriter?.create()
+const rewriterPromise = window.ai?.rewriter?.create?.()
 
 export type WriterPrompt = {
   input: string
