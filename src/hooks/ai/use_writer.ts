@@ -21,6 +21,7 @@ export const useWriter = () => {
 
   const write = async ({ input, onChunk }: WriterPrompt) => {
     setIsPending(true)
+    let output = ''
 
     try {
       const writer = await writerPromise
@@ -28,12 +29,14 @@ export const useWriter = () => {
 
       for await (const chunk of stream) {
         onChunk(chunk)
+        output = chunk
       }
     } catch (error) {
       // todo error
     }
 
     setIsPending(false)
+    return output
   }
 
   const rewrite = async ({ input, context, onChunk }: RewriterPrompt) => {

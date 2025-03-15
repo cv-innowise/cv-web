@@ -40,3 +40,11 @@ export const getCvProjectResponsibilitiesPrompt = (
     Format each responsibility to start with * and end with "\n" new line symbol. 
   `
 }
+
+export const getSkillsPrompt = (department?: string, position?: string) => {
+  return `
+    Write a list of most popular skills and technologies.
+    Pick suitable for this role and position: ${department} ${position}.
+    Format this list using "," separator.
+  `
+}
