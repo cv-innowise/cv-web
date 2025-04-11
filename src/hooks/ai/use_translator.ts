@@ -1,11 +1,21 @@
 import { useCallback } from 'react'
 
 // @ts-expect-error translation types
-const detectorPromise = window.ai?.languageDetector?.create?.()
+const detectorPromise = window.LanguageDetector?.create?.()
+// @ts-expect-error translation types
+const translatorPromise_enRu = window.Translator?.create?.({
+  sourceLanguage: 'en',
+  targetLanguage: 'ru'
+})
+// @ts-expect-error translation types
+const translatorPromise_enDe = window.Translator?.create?.({
+  sourceLanguage: 'en',
+  targetLanguage: 'de'
+})
 
 export const useTranslator = () => {
   // @ts-expect-error translation types
-  const isAvailable = !!window.translation
+  const isAvailable = window.LanguageDetector?.availability()
 
   const detect = useCallback(async (source: string) => {
     try {
@@ -14,7 +24,7 @@ export const useTranslator = () => {
 
       return results[0]
     } catch (error) {
-      // todo error
+      console.error(error)
     }
   }, [])
 
@@ -27,23 +37,15 @@ export const useTranslator = () => {
           return source
         }
 
-        // @ts-expect-error translation types
-        const canTranslate = await window.translation?.canTranslate({
-          sourceLanguage,
-          targetLanguage
-        })
+        if (sourceLanguage === 'en' && targetLanguage === 'ru') {
+          return (await translatorPromise_enRu).translate(source)
+        }
 
-        if (canTranslate === 'readily' || canTranslate === 'after-download') {
-          // @ts-expect-error translation types
-          const translator = await window.translation?.createTranslator({
-            sourceLanguage,
-            targetLanguage
-          })
-
-          return translator.translate(source)
+        if (sourceLanguage === 'en' && targetLanguage === 'de') {
+          return (await translatorPromise_enDe).translate(source)
         }
       } catch (error) {
-        // todo error
+        console.error(error)
       }
     },
     [detect]
