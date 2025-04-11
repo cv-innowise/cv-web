@@ -1,9 +1,9 @@
 import { useState } from 'react'
 
 // @ts-expect-error ai types
-const writerPromise = window.ai?.writer?.create?.()
+const writerPromise = window.Writer?.create?.()
 // @ts-expect-error ai types
-const rewriterPromise = window.ai?.rewriter?.create?.()
+const rewriterPromise = window.Rewriter?.create?.()
 
 export type WriterPrompt = {
   input: string
@@ -17,7 +17,7 @@ export type RewriterPrompt = WriterPrompt & {
 export const useWriter = () => {
   const [isPending, setIsPending] = useState(false)
   // @ts-expect-error ai types
-  const isAvailable = !!window.ai
+  const isAvailable = !!window.Writer?.availability?.() && !!window.Rewriter?.availability?.()
 
   const write = async ({ input, onChunk }: WriterPrompt) => {
     setIsPending(true)
@@ -25,12 +25,14 @@ export const useWriter = () => {
     try {
       const writer = await writerPromise
       const stream = writer.writeStreaming(input)
+      let output = ''
 
       for await (const chunk of stream) {
-        onChunk(chunk)
+        output += chunk
+        onChunk(output)
       }
     } catch (error) {
-      // todo error
+      console.error(error)
     }
 
     setIsPending(false)
@@ -42,12 +44,14 @@ export const useWriter = () => {
     try {
       const rewriter = await rewriterPromise
       const stream = rewriter.rewriteStreaming(input, { context })
+      let output = ''
 
       for await (const chunk of stream) {
-        onChunk(chunk)
+        output += chunk
+        onChunk(output)
       }
     } catch (error) {
-      // todo error
+      console.error(error)
     }
 
     setIsPending(false)
